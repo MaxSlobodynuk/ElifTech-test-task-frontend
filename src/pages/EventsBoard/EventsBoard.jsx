@@ -4,16 +4,35 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./EventsBoard.module.css";
 
 const EventsBoard = () => {
-    const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const perPage = 5;
 
   useEffect(() => {
     axios
-      .get("https://eliftech-test-task-ltfm.onrender.com/events")
+      .get(
+        `https://eliftech-test-task-ltfm.onrender.com/events?page=${page}&perPage=${perPage}`
+      )
       .then((response) => {
-        setEvents(response.data.data);
+        const data = response.data.data;
+        setEvents(data.data);
+        setTotalPages(data.totalPages);
       })
       .catch((error) => console.error("Error fetching events:", error));
-  }, []);
+  }, [page]);
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   return (
     <div className={styles.eventsContainer}>
@@ -35,9 +54,15 @@ const EventsBoard = () => {
         ))}
       </div>
       <div className={styles.pagination}>
-        <button>←</button>
-        <span>1 2 3 ... 9 10</span>
-        <button>→</button>
+        <button onClick={handlePreviousPage} disabled={page === 1}>
+          ←
+        </button>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={page === totalPages}>
+          →
+        </button>
       </div>
     </div>
   );
