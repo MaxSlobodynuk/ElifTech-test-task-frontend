@@ -54,13 +54,13 @@ const EventsBoard = () => {
         ))}
       </div>
       <div className={styles.pagination}>
-        <button onClick={handlePreviousPage} disabled={page === 1}>
+        <button onClick={handlePreviousPage} className={styles.btn} disabled={page === 1}>
           ←
         </button>
         <span>
           Page {page} of {totalPages}
         </span>
-        <button onClick={handleNextPage} disabled={page === totalPages}>
+        <button onClick={handleNextPage} className={styles.btn} disabled={page === totalPages}>
           →
         </button>
       </div>

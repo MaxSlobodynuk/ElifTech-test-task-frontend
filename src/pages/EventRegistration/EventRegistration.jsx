@@ -4,45 +4,52 @@ import { useNavigate } from "react-router-dom";
 import styles from "./EventRegistration.module.css";
 
 const EventRegistration = () => {
-  // const [formData, setFormData] = useState({
-  //   fullName: "",
-  //   email: "",
-  //   dateOfBirth: "",
-  //   source: "",
-  // });
-  // const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    dateOfBirth: "",
+    source: "",
+  });
 
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  // };
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // Відправка даних на сервер
-  //   axios
-  //     .post("https://your-api-endpoint.com/register", formData)
-  //     .then((response) => {
-  //       console.log("Registration successful:", response.data);
-  //       navigate("/thank-you"); // Перенаправлення на сторінку подяки
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error during registration:", error);
-  //     });
-  // };
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "https://eliftech-test-task-ltfm.onrender.com/auth/register",
+        formData
+      );
+
+      if (response.status === 200) {
+        navigate("/success"); 
+      }
+    } catch (error) {
+      setError("Registration failed. Please try again.");
+    }
+  };
 
   return (
     <div className={styles.registrationContainer}>
       <h1>Event Registration</h1>
-      <form
-        // onSubmit={handleSubmit}
-        className={styles.registrationForm}>
+      {error && <p className={styles.error}>{error}</p>}
+      <form className={styles.registrationForm} onSubmit={handleSubmit}>
         <label htmlFor="fullName">Full name</label>
         <input
           type="text"
           id="fullName"
           name="fullName"
-          // value={formData.fullName}
-          // onChange={handleChange}
+          value={formData.fullName}
+          onChange={handleChange}
           required
         />
 
@@ -51,8 +58,8 @@ const EventRegistration = () => {
           type="email"
           id="email"
           name="email"
-          // value={formData.email}
-          // onChange={handleChange}
+          value={formData.email}
+          onChange={handleChange}
           required
         />
 
@@ -61,8 +68,8 @@ const EventRegistration = () => {
           type="date"
           id="dateOfBirth"
           name="dateOfBirth"
-          // value={formData.dateOfBirth}
-          // onChange={handleChange}
+          value={formData.dateOfBirth}
+          onChange={handleChange}
           required
         />
 
@@ -73,8 +80,8 @@ const EventRegistration = () => {
             id="socialMedia"
             name="source"
             value="Social media"
-            // checked={formData.source === "Social media"}
-            // onChange={handleChange}
+            checked={formData.source === "Social media"}
+            onChange={handleChange}
             required
           />
           <label htmlFor="socialMedia">Social media</label>
@@ -84,8 +91,8 @@ const EventRegistration = () => {
             id="friends"
             name="source"
             value="Friends"
-            // checked={formData.source === "Friends"}
-            // onChange={handleChange}
+            checked={formData.source === "Friends"}
+            onChange={handleChange}
           />
           <label htmlFor="friends">Friends</label>
 
@@ -94,8 +101,8 @@ const EventRegistration = () => {
             id="foundMyself"
             name="source"
             value="Found myself"
-            // checked={formData.source === "Found myself"}
-            // onChange={handleChange}
+            checked={formData.source === "Found myself"}
+            onChange={handleChange}
           />
           <label htmlFor="foundMyself">Found myself</label>
         </div>
