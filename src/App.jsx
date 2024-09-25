@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import EventsBoard from "./pages/EventsBoard/EventsBoard";
 import EventRegistration from "./pages/EventRegistration/EventRegistration";
 import EventDetails from "./pages/EventDetails/EventDetails";
-import Success from "./pages/Success/success";
+import Success from "./pages/Success/Success";
+
 
 const App = () => {
   return (
